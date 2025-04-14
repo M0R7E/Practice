@@ -6,7 +6,6 @@
 double *quad(double a, double b, double c, double eps) {
   if (fabs(a) <= eps)
     return NULL;
-  const double Eps = 0.0002;
 
   b = b / a;
   c = c / a;
@@ -14,7 +13,7 @@ double *quad(double a, double b, double c, double eps) {
 
   double desc = (b * b) - (4 * c);
 
-  if (desc > 0) {
+  if (desc > eps) {
     double *result;
     double x1;
     double x2;
@@ -34,22 +33,16 @@ double *quad(double a, double b, double c, double eps) {
       x2 = svo;
     }
 
-    if (fabs(x1 - x2) <= Eps) {
-      result = malloc(sizeof(double) * 2);
-      result[0] = 1;
-      result[1] = (x1 + x2) / 2;
-    } else {
-      result = malloc(sizeof(double) * 3);
-      result[0] = 2;
-      result[1] = x1;
-      result[2] = x2;
-    }
+    result = malloc(sizeof(double) * 3);
+    result[0] = 2;
+    result[1] = x1;
+    result[2] = x2;
 
     return result;
   } else if (fabs(desc) <= eps) {
     double *result = malloc(sizeof(double) * 2);
 
-    double x1 = (-b) / 2 * a;
+    double x1 = (-b) / 2;
 
     if (fabs(x1) == 0)
       x1 = fabs(x1);
