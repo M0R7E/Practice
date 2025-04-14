@@ -48,13 +48,15 @@ void test_4() {
 }
 
 void test_5() {
-  double eps = 1E-4;
+  double eps = 1E-7;
   double a = 1;
   double b = 0;
   double c = -1E-7;
+  double eps_for_res = 1E-4;
 
   double *res = quad(a, b, c, eps);
-  assert(res[0] == 2 && fabs(res[1] + 3E-4) < eps && fabs(res[2] - 3E-4) < eps);
+  assert(res[0] == 2 && fabs(res[1] + 3E-4) < eps_for_res &&
+         fabs(res[2] - 3E-4) < eps_for_res);
   free(res);
 }
 
