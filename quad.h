@@ -1,0 +1,1 @@
+double *quad(double a, double b, double c, double eps);
