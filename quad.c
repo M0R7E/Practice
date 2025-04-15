@@ -13,6 +13,12 @@ double *quad(double a, double b, double c, double eps) {
 
   double desc = (b * b) - (4 * c);
 
+  if (desc < -eps) {
+    double *result = malloc(sizeof(double));
+    result[0] = 0;
+    return result;
+  }
+
   if (desc > eps) {
     double *result;
     double x1;
@@ -52,7 +58,4 @@ double *quad(double a, double b, double c, double eps) {
 
     return result;
   }
-  double *altRes = malloc(sizeof(double));
-  altRes[0] = 0;
-  return altRes;
 }
