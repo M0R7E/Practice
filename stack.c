@@ -25,7 +25,7 @@ int isIn(int *stack) {
 int Pop(int *stack) {
   if (isIn(stack)) {
     int result = stack[stack[0]];
-    stack = realloc(stack, sizeof(stack) - 1);
+    stack = realloc(stack, sizeof(stack) - sizeof(int));
     stack[0] = stack[0] - 1;
     return result;
   } else
