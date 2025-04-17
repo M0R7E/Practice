@@ -2,91 +2,88 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int length(struct list *list) { return list->last->num + 1; }
-
-int addL(struct list *list, int value) {
-  struct list *orig = list;
-  list = list->last;
-  list->next = malloc(sizeof(struct list));
-  list->next->num = list->num + 1;
-  list->next->val = value;
-  orig->last = list->next;
-
-  return 0;
+struct list *create_list(int value) {
+  struct list *ls = (struct list *)malloc(sizeof(struct list));
+  ls->val = value;
+  return ls;
 }
 
-int addS(struct list *list, int value) {
-  int count = list->last->num + 1;
-  int prevV;
-  addL(list, 0);
-  for (int i = 0; i <= count; i++) {
-    list->num = i;
-    prevV = list->val;
-    list->val = value;
-    value = prevV;
-    if (i < count) {
-      list = list->next;
-    }
+int length(struct list *ls) {
+  if (ls == NULL)
+    return 0;
+  int i = 1;
+  while (ls->next != NULL) {
+    ls = ls->next;
+    i += 1;
   }
+  return i;
+}
+
+int add_to_end(struct list *ls, int value) {
+  while (ls->next != NULL)
+    ls = ls->next;
+  struct list *new = (struct list *)malloc(sizeof(struct list));
+  new->val = value;
+  ls->next = new;
   return 0;
 }
 
-int addI(struct list *list, int index, int value) {
-  if (!(index < length(list) && index >= 0))
-    exit(EXIT_FAILURE);
-  int len = list->last->num;
-  if (index == list->last->num) {
-    addL(list, value);
-  } else {
-    for (int i = 0; i < index; i++)
-      list = list->next;
-    struct list *next = list->next;
-    list->next = malloc(sizeof(struct list));
-    list->next->val = value;
-    list->next->num = list->num + 1;
-    list = list->next;
-    list->next = next;
-
-    for (int i = list->num + 1; i <= len + 1; i++) {
-      list = list->next;
-      list->num = i;
-    }
+int add_in_start(struct list *ls, int value) {
+  int next = ls->val;
+  ls->val = value;
+  while (ls->next != NULL) {
+    ls = ls->next;
+    next = ls->val;
+    ls->val = next;
   }
+  ls->next = (struct list *)malloc(sizeof(struct list));
+  ls->next->val = next;
   return 0;
 }
 
-int findByIndex(struct list *list, int index) {
-  for (int i = 0; i < index; i++)
-    list = list->next;
-  return list->val;
-}
-
-int removeI(struct list *list, int index) {
-  int last = list->last->num;
-  struct list *orig = list;
-  if (index != last) {
-    for (int i = 0; i < index; i++)
-      list = list->next;
-    for (int i = index; i < last; i++) {
-      list->val = list->next->val;
-      if (i == last - 1) {
-        orig->last = list;
-        free(list->next);
-        list->next = NULL;
-      } else {
-        list = list->next;
-      }
-    }
-  } else {
-    if (last > 0) {
-      for (int i = 0; i < last - 1; i++)
-        list = list->next;
-      free(list->next);
-      list->next = NULL;
-      orig->last = list;
-    } else {
-      free(list);
-    }
+int add_after_index(struct list *ls, int index, int value) {
+  if (index < 0)
+    return 0;
+  int i = 0;
+  while (ls->next != NULL && i < index) {
+    ls = ls->next;
+    i += 1;
   }
+  struct list *next = ls->next;
+  ls->next = (struct list *)malloc(sizeof(struct list));
+  ls->next->val = value;
+  ls->next->next = next;
   return 0;
+}
+
+int find_by_index(struct list *ls, int index) {
+  if (index < 0)
+    return 0;
+  int i = 0;
+  while (ls->next != NULL && i < index) {
+    ls = ls->next;
+    i += 1;
+  }
+  return ls->val;
+}
+int remove_by_index(struct list *ls, int index) {
+  if (index < 0)
+    return 0;
+  int i = 0;
+  while (ls->next != NULL && i < index) {
+    ls = ls->next;
+    i += 1;
+  }
+  if (i == 0)
+    ;
+  *ls = *ls->next;
+  return 1;
+}
+void destroy(struct list *ls) {
+  while (ls->next != NULL) {
+    struct list *prev = ls;
+    ls = ls->next;
+    free(prev);
+  }
+  free(ls);
 }
