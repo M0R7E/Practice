@@ -23,14 +23,17 @@ double *quad(double a, double b, double c, double eps) {
     double *result;
     double x1;
     double x2;
-    if (b >= 0) {
-      x1 = (-1 * b - sqrt(desc)) / 2;
+
+    int sgn;
+    if (b >= eps) {
+      sgn = -1;
     }
 
     else {
-      x1 = (-1 * b + sqrt(desc)) / 2;
+      sgn = 1;
     }
 
+    x1 = (-1 * b + sqrt(desc) * sgn) / 2;
     x2 = c / x1;
 
     if (x1 > x2) {
