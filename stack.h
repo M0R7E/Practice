@@ -1,5 +1,4 @@
-int *Stack();                    // Создание стека
-int Push(int *stack, int value); // Добавление элемента в стек
-int Pop(int *stack); // Удаляет последний элемент и возвращает его же
-int isIn(int *list); // Должен вернуть 1, если есть элементы в стеке и 0 если
-                     // нет
+int *stack();
+int push(int *stack, int value);
+int pop(int *stack);
+int is_in(int *list);
